@@ -208,6 +208,7 @@ services:
     volumes:
       - ./notebooks:/home/jovyan/work
       - ./jars:/opt/spark/jars
+      - ./data:/opt/airflow/data
     environment:
       - JUPYTER_ENABLE_LAB=yes
       - GRANT_SUDO=yes
