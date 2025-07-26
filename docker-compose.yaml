@@ -299,6 +299,22 @@ services:
       - hadoop-resourcemanager
 
 
+  grafana:
+    image: grafana/grafana:10.0.3
+    container_name: grafana
+    depends_on:
+      - postgres
+    ports:
+      - "3000:3000"
+    networks:
+      sparknet:
+        ipv4_address: 172.30.1.26
+    environment:
+      - GF_SECURITY_ADMIN_USER=admin
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+    volumes:
+      - grafana-storage:/var/lib/grafana
+
 
 volumes:
   pgdata:
@@ -306,3 +322,4 @@ volumes:
   hadoop-namenode:
   hadoop-datanode1:
   hadoop-datanode2:
+  grafana-storage:
