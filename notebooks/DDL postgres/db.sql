@@ -28,3 +28,7 @@ CREATE Table Transactions (
     merchant_id VARCHAR ,
     customer_id VARCHAR
 )
+
+DROP TABLE Transactions;
+
+TRUNCATE TABLE Transactions;
