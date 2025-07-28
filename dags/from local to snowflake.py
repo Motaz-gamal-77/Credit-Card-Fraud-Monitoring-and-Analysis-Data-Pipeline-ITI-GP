@@ -5,6 +5,7 @@ import snowflake.connector
 import psycopg2
 import os
 import csv
+import pandas as pd
 
 
 # connect to Postgres
@@ -40,15 +41,8 @@ def connect_to_snowflake():
 def extract_data_from_postgres_and_save_it_to_csv(querey, file_name):
     conn, cur = connect_to_Postgres()
     try:
-        # Example query to extract data
-        cur.execute(f"{querey}")
-        rows = cur.fetchall()
-
-        # Save to CSV file
-        csv_file_path = f'/opt/airflow/dags/stagging/{file_name}.csv'
-        with open(csv_file_path, 'w') as f:
-            for row in rows:
-                f.write(','.join(map(str, row)) + '\n')
+        df = pd.read_sql(querey, conn)
+        df.to_csv(f'/opt/airflow/dags/stagging/{file_name}.csv', index=False)
     finally:
         cur.close() 
         conn.close()
