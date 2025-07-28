@@ -91,7 +91,7 @@ with DAG(
         task_id='exrtract_customer_data',
         python_callable=extract_data_from_postgres_and_save_it_to_csv,
         op_kwargs={
-            'querey': 'select distinct customer_id, cc_num, first, last, gender, dob, street, city, state, zip, lat, long, city_pop from transactions',
+            'querey': 'select distinct customer_id, cc_num, first, last, gender, dob, age, job, street, city, state, zip, lat, long, city_pop from transactions',
             'file_name': 'customer_data'
      }
     )
@@ -102,7 +102,7 @@ with DAG(
         task_id='extract_transaction_data',
         python_callable=extract_data_from_postgres_and_save_it_to_csv,
         op_kwargs={
-            'querey': 'select trans_num, trans_date_trans_time, customer_id, merchant_id, amt, is_fraud, unix_time from transactions',
+            'querey': 'select trans_num, trans_date_trans_time, customer_id, merchant_id, amt, distance_km, is_fraud, unix_time from transactions',
             'file_name': 'transaction_data'
      }
     )
@@ -143,4 +143,4 @@ with DAG(
     )
 
 
-merschant_data_extraction>> customer_data_extraction>> transaction_data_extraction>> merschent_dim_loding>> customer_dim_loding>> fact_loding
+[merschant_data_extraction>>merschent_dim_loding, customer_data_extraction>>customer_dim_loding]>>transaction_data_extraction>> fact_loding
