@@ -45,7 +45,7 @@ def extract_data_from_postgres_and_save_it_to_csv(querey, file_name):
         rows = cur.fetchall()
 
         # Save to CSV file
-        csv_file_path = f'/opt/airflow/dags/data/{file_name}.csv'
+        csv_file_path = f'/opt/airflow/dags/stagging/{file_name}.csv'
         with open(csv_file_path, 'w') as f:
             for row in rows:
                 f.write(','.join(map(str, row)) + '\n')
@@ -120,7 +120,7 @@ with DAG(
         task_id='load_merchant_data',
         python_callable=load_csv_to_snowflake,
         op_kwargs={
-            'CSV_PATH': '/opt/airflow/dags/data/merchant_data.csv',
+            'CSV_PATH': '/opt/airflow/dags/stagging/merchant_data.csv',
             'CSV_FILE_NAME': 'merchant_data.csv',
             'table_name': 'merchant_Dim'
         }
@@ -131,7 +131,7 @@ with DAG(
         task_id='load_customer_data',
         python_callable=load_csv_to_snowflake,
         op_kwargs={
-            'CSV_PATH': '/opt/airflow/dags/data/customer_data.csv',
+            'CSV_PATH': '/opt/airflow/dags/stagging/customer_data.csv',
             'CSV_FILE_NAME': 'customer_data.csv',
             'table_name': 'customer_Dim'
         }
@@ -142,7 +142,7 @@ with DAG(
         task_id='load_fact_data',
         python_callable=load_csv_to_snowflake,
         op_kwargs={
-            'CSV_PATH': '/opt/airflow/dags/data/transaction_data.csv',
+            'CSV_PATH': '/opt/airflow/dags/stagging/transaction_data.csv',
             'CSV_FILE_NAME': 'transaction_data.csv',
             'table_name': 'transactions_fact'
         }
