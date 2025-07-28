@@ -103,7 +103,7 @@ ORDER BY
   1;
 
 
--- Fraudulent Transactions Every 20 Seconds
+-- Fraudulent Transactions Every 20 Seconds --
 SELECT
   date_bin('20 seconds', event_time, TIMESTAMP '2000-01-01 00:00:00') AS time,
   SUM(is_fraud) AS frauds

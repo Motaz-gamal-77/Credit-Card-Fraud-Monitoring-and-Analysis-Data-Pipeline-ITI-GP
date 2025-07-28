@@ -129,3 +129,95 @@
 [2025-07-26T21:09:55.665+0000] {manager.py:821} INFO - Searching for files in /opt/airflow/dags
 [2025-07-26T21:09:55.678+0000] {manager.py:824} INFO - There are 0 files in /opt/airflow/dags
 
+[2025-07-28T13:14:23.370+0000] {manager.py:483} INFO - Processing files using up to 2 processes at a time 
+[2025-07-28T13:14:23.371+0000] {manager.py:484} INFO - Process each file at most once every 30 seconds
+[2025-07-28T13:14:23.371+0000] {manager.py:485} INFO - Checking for new files in /opt/airflow/dags every 300 seconds
+[2025-07-28T13:14:23.372+0000] {manager.py:821} INFO - Searching for files in /opt/airflow/dags
+[2025-07-28T13:14:23.421+0000] {manager.py:824} INFO - There are 1 files in /opt/airflow/dags
+[2025-07-28T13:14:23.545+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                       PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run      Last # of DB Queries
+--------------------------------------------  -----  ---------  --------  ----------  --------------  ----------  ----------------------
+/opt/airflow/dags/from local to snowflake.py    179  0.04s             0           0                                                   0
+================================================================================
+[2025-07-28T13:14:53.731+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                     PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+--------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/from local to snowflake.py                           0           1  1.71s           2025-07-28T13:14:25                       5
+================================================================================
+[2025-07-28T13:15:23.928+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                     PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+--------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/from local to snowflake.py                           0           1  0.81s           2025-07-28T13:14:56                       5
+================================================================================
+[2025-07-28T13:15:54.132+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                     PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+--------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/from local to snowflake.py                           0           1  0.77s           2025-07-28T13:15:27                       5
+================================================================================
+[2025-07-28T13:16:24.339+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                     PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+--------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/from local to snowflake.py                           0           1  0.77s           2025-07-28T13:15:58                       5
+================================================================================
+[2025-07-28T13:16:54.548+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                     PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+--------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/from local to snowflake.py                           0           1  0.78s           2025-07-28T13:16:29                       5
+================================================================================
+[2025-07-28T13:17:24.738+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                     PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+--------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/from local to snowflake.py                           0           1  0.80s           2025-07-28T13:17:00                       5
+================================================================================
+[2025-07-28T13:17:54.932+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                     PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+--------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/from local to snowflake.py                           0           1  0.76s           2025-07-28T13:17:31                       5
+================================================================================
+[2025-07-28T13:18:25.145+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                     PID    Runtime      # DAGs    # Errors  Last Runtime    Last Run               Last # of DB Queries
+--------------------------------------------  -----  ---------  --------  ----------  --------------  -------------------  ----------------------
+/opt/airflow/dags/from local to snowflake.py                           0           1  0.77s           2025-07-28T13:18:02                       5
+================================================================================
+[2025-07-28T13:18:28.141+0000] {manager.py:465} INFO - Exiting gracefully upon receiving signal 15
+[2025-07-28T13:22:26.702+0000] {manager.py:483} INFO - Processing files using up to 2 processes at a time 
+[2025-07-28T13:22:26.703+0000] {manager.py:484} INFO - Process each file at most once every 30 seconds
+[2025-07-28T13:22:26.704+0000] {manager.py:485} INFO - Checking for new files in /opt/airflow/dags every 300 seconds
+[2025-07-28T13:22:26.704+0000] {manager.py:821} INFO - Searching for files in /opt/airflow/dags
+[2025-07-28T13:22:26.722+0000] {manager.py:824} INFO - There are 1 files in /opt/airflow/dags
+[2025-07-28T13:22:26.842+0000] {manager.py:997} INFO - 
+================================================================================
+DAG File Processing Stats
+
+File Path                                       PID  Runtime      # DAGs    # Errors  Last Runtime    Last Run      Last # of DB Queries
+--------------------------------------------  -----  ---------  --------  ----------  --------------  ----------  ----------------------
+/opt/airflow/dags/from local to snowflake.py    192  0.02s             0           0                                                   0
+================================================================================
+[2025-07-28T13:22:54.332+0000] {manager.py:465} INFO - Exiting gracefully upon receiving signal 15
