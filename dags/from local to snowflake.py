@@ -83,33 +83,33 @@ with DAG(
 ) as dag:
 
     # extracting merschent data from postgres and saving it to csv
-    merschent_data_extraction = PythonOperator(
-        task_id='get_table_names',
+    merschant_data_extraction = PythonOperator(
+        task_id='exrtract_merchant_data',
         python_callable=extract_data_from_postgres_and_save_it_to_csv,
         op_kwargs={
-            'querey': 'query to extract data from postgres',
-            'file_name': 'file_name_you_want_to_save_data_in.csv'
+            'querey': 'select distinct merchant_id, merchant, category, merch_long, merch_lat from transactions',
+            'file_name': 'merchant_data'
      }
     )
     
-    # extracting customer data from postgres and saving it to csv
+    # # extracting customer data from postgres and saving it to csv
     customer_data_extraction = PythonOperator(
-        task_id='get_table_names',
+        task_id='exrtract_customer_data',
         python_callable=extract_data_from_postgres_and_save_it_to_csv,
         op_kwargs={
-            'querey': 'query to extract data from postgres',
-            'file_name': 'file_name_you_want_to_save_data_in.csv'
+            'querey': 'select distinct customer_id, cc_num, first, last, gender, dob, street, city, state, zip, lat, long, city_pop from transactions',
+            'file_name': 'customer_data'
      }
     )
         
         
     # extracting transaction data from postgres and saving it to csv    
     transaction_data_extraction = PythonOperator(
-        task_id='get_table_names',
+        task_id='extract_transaction_data',
         python_callable=extract_data_from_postgres_and_save_it_to_csv,
         op_kwargs={
-            'querey': 'query to extract data from postgres',
-            'file_name': 'file_name_you_want_to_save_data_in.csv'
+            'querey': 'select trans_num, trans_date_trans_time, customer_id, merchant_id, amt, is_fraud, unix_time from transactions',
+            'file_name': 'transaction_data'
      }
     )
 
@@ -117,33 +117,36 @@ with DAG(
 
     # Loading merschent data into airflow staging area and then into targeted table
     merschent_dim_loding = PythonOperator(
-        task_id='get_table_names',
+        task_id='load_merchant_data',
         python_callable=load_csv_to_snowflake,
         op_kwargs={
-            'CSV_PATH': '/opt/airflow/dags/data/fact.csv',
-            'CSV_FILE_NAME': 'file_name_in_staging_area',
-            'table_name': 'table_name_in_dwh'
+            'CSV_PATH': '/opt/airflow/dags/data/merchant_data.csv',
+            'CSV_FILE_NAME': 'merchant_data.csv',
+            'table_name': 'merchant_Dim'
         }
     )
     
     # Loading customer data into airflow staging area and then into targeted table
     customer_dim_loding = PythonOperator(
-        task_id='get_table_names',
+        task_id='load_customer_data',
         python_callable=load_csv_to_snowflake,
         op_kwargs={
-            'CSV_PATH': '/opt/airflow/dags/data/fact.csv',
-            'CSV_FILE_NAME': 'file_name_in_staging_area',
-            'table_name': 'table_name_in_dwh'
+            'CSV_PATH': '/opt/airflow/dags/data/customer_data.csv',
+            'CSV_FILE_NAME': 'customer_data.csv',
+            'table_name': 'customer_Dim'
         }
     )
 
     # Loading transaction data into airflow staging area and then into targeted table
     fact_loding = PythonOperator(
-        task_id='get_table_names',
+        task_id='load_fact_data',
         python_callable=load_csv_to_snowflake,
         op_kwargs={
-            'CSV_PATH': '/opt/airflow/dags/data/fact.csv',
-            'CSV_FILE_NAME': 'file_name_in_staging_area',
-            'table_name': 'table_name_in_dwh'
+            'CSV_PATH': '/opt/airflow/dags/data/transaction_data.csv',
+            'CSV_FILE_NAME': 'transaction_data.csv',
+            'table_name': 'transactions_fact'
         }
     )
+
+
+merschant_data_extraction>> customer_data_extraction>> transaction_data_extraction>> merschent_dim_loding>> customer_dim_loding>> fact_loding
