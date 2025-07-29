@@ -47,15 +47,19 @@ def extract_data_from_postgres_and_save_it_to_csv(querey, file_name):
         cur.close() 
         conn.close()
 
-
-
-# Function to load CSV data into Snowflake staging area and then into targeted table
-def load_csv_to_snowflake(CSV_PATH, CSV_FILE_NAME,table_name):
+# Function to load CSV file into Snowflake staging area
+def loaad_csv_to_staging_area(CSV_PATH):
     cursor , conn = connect_to_snowflake()
     try:
         # Upload local file to internal stage
         cursor.execute(f"PUT file://{CSV_PATH} @AIRFLOW_STAGE OVERWRITE = TRUE")
+    finally:
+        cursor.close()
 
+# Function to load CSV data into Snowflake staging area and then into targeted table
+def load_csv_to_snowflake(CSV_FILE_NAME,table_name):
+    cursor , conn = connect_to_snowflake()
+    try:
         # Load data from stage into table
         cursor.execute(f"""
             COPY INTO {table_name}
@@ -66,7 +70,7 @@ def load_csv_to_snowflake(CSV_PATH, CSV_FILE_NAME,table_name):
     finally:
         cursor.close()
         
-
+# --------------------------------------------------------------------------------------- #
         
 # Main DAG definition
 with DAG(
@@ -75,16 +79,14 @@ with DAG(
     schedule_interval=None,
     catchup=False
 ) as dag:
-
+    # --------------------------------------------------------------------------------------- #
     # extracting merschent data from postgres and saving it to csv
     merschant_data_extraction = PythonOperator(
         task_id='exrtract_merchant_data',
         python_callable=extract_data_from_postgres_and_save_it_to_csv,
         op_kwargs={
             'querey': 'select distinct merchant_id, merchant, category, merch_long, merch_lat from transactions',
-            'file_name': 'merchant_data'
-     }
-    )
+            'file_name': 'merchant_data'})
     
     # # extracting customer data from postgres and saving it to csv
     customer_data_extraction = PythonOperator(
@@ -92,9 +94,7 @@ with DAG(
         python_callable=extract_data_from_postgres_and_save_it_to_csv,
         op_kwargs={
             'querey': 'select distinct customer_id, cc_num, first, last, gender, dob, age, job, street, city, state, zip, lat, long, city_pop from transactions',
-            'file_name': 'customer_data'
-     }
-    )
+            'file_name': 'customer_data'})
         
         
     # extracting transaction data from postgres and saving it to csv    
@@ -103,44 +103,57 @@ with DAG(
         python_callable=extract_data_from_postgres_and_save_it_to_csv,
         op_kwargs={
             'querey': 'select trans_num, trans_date_trans_time, customer_id, merchant_id, amt, distance_km, is_fraud, unix_time from transactions',
-            'file_name': 'transaction_data'
-     }
-    )
+            'file_name': 'transaction_data'})
 
+    # --------------------------------------------------------------------------------------- #
+    # Loading merschent data into airflow staging area
+    loding_merschent_csv_into_staging = PythonOperator(
+        task_id='load_merchant_data_into_staging',
+        python_callable=load_csv_to_snowflake,
+        op_kwargs={'CSV_PATH': '/opt/airflow/dags/stagging/merchant_data.csv'})
 
+    # Loading customer data into airflow staging area
+    loding_customer_csv_into_staging = PythonOperator(
+        task_id='load_customer_data_into_staging',
+        python_callable=load_csv_to_snowflake,
+        op_kwargs={'CSV_PATH': '/opt/airflow/dags/stagging/customer_data.csv'})
 
-    # Loading merschent data into airflow staging area and then into targeted table
+    # Loading transaction data into airflow staging area
+    loding_transaction_csv_into_staging = PythonOperator(
+        task_id='load_transaction_data_into_staging',
+        python_callable=load_csv_to_snowflake,
+        op_kwargs={'CSV_PATH': '/opt/airflow/dags/stagging/transaction_data.csv'})
+
+    # --------------------------------------------------------------------------------------- #
+    # Loading merschent data from airflow staging area and then into targeted table
     merschent_dim_loding = PythonOperator(
         task_id='load_merchant_data',
         python_callable=load_csv_to_snowflake,
         op_kwargs={
-            'CSV_PATH': '/opt/airflow/dags/stagging/merchant_data.csv',
             'CSV_FILE_NAME': 'merchant_data.csv',
             'table_name': 'merchant_Dim'
         }
     )
-    
-    # Loading customer data into airflow staging area and then into targeted table
+
+    # Loading customer data from airflow staging area and then into targeted table
     customer_dim_loding = PythonOperator(
         task_id='load_customer_data',
         python_callable=load_csv_to_snowflake,
         op_kwargs={
-            'CSV_PATH': '/opt/airflow/dags/stagging/customer_data.csv',
             'CSV_FILE_NAME': 'customer_data.csv',
             'table_name': 'customer_Dim'
         }
     )
 
-    # Loading transaction data into airflow staging area and then into targeted table
+    # Loading transaction data from airflow staging area and then into targeted table
     fact_loding = PythonOperator(
         task_id='load_fact_data',
         python_callable=load_csv_to_snowflake,
         op_kwargs={
-            'CSV_PATH': '/opt/airflow/dags/stagging/transaction_data.csv',
             'CSV_FILE_NAME': 'transaction_data.csv',
             'table_name': 'transactions_fact'
         }
     )
 
 
-[merschant_data_extraction>>merschent_dim_loding, customer_data_extraction>>customer_dim_loding]>>transaction_data_extraction>> fact_loding
+[merschant_data_extraction>>loding_merschent_csv_into_staging>> merschent_dim_loding, customer_data_extraction>>loding_customer_csv_into_staging>>customer_dim_loding]>>transaction_data_extraction>>loding_transaction_csv_into_staging>>fact_loding
