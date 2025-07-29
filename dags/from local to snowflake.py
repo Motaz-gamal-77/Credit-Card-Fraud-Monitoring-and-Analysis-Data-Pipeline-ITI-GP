@@ -185,7 +185,7 @@ with DAG(
         op_kwargs={
             'query1': """ CREATE TEMPORARY TABLE temp_table2 AS SELECT DISTINCT * FROM merchant_dim; """,
             'query2': """ TRUNCATE TABLE merchant_dim; """,
-            'query3': """ INSERT INTO merchant_dim SELECT * FROM temp_table; """,
+            'query3': """ INSERT INTO merchant_dim SELECT * FROM temp_table2; """,
             'query4': """ DROP TABLE temp_table2; """
         }
     )
