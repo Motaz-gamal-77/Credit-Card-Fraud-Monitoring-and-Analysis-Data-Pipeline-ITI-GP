@@ -76,7 +76,7 @@ def load_csv_to_snowflake(CSV_FILE_NAME,table_name):
 with DAG(
     dag_id='list_snowflake_tables',
     start_date=datetime(2024, 1, 1),
-    schedule_interval=None,
+    schedule_interval='0 1 * * *',
     catchup=False
 ) as dag:
     # --------------------------------------------------------------------------------------- #
@@ -85,7 +85,7 @@ with DAG(
         task_id='exrtract_merchant_data',
         python_callable=extract_data_from_postgres_and_save_it_to_csv,
         op_kwargs={
-            'querey': 'select distinct merchant_id, merchant, category, merch_long, merch_lat from transactions',
+            'querey': "select distinct merchant_id, merchant, category, merch_long, merch_lat from transactions WHERE event_time::date = CURRENT_DATE - INTERVAL '1 day' ",
             'file_name': 'merchant_data'})
     
     # # extracting customer data from postgres and saving it to csv
@@ -93,7 +93,7 @@ with DAG(
         task_id='exrtract_customer_data',
         python_callable=extract_data_from_postgres_and_save_it_to_csv,
         op_kwargs={
-            'querey': 'select distinct customer_id, cc_num, first, last, gender, dob, age, job, street, city, state, zip, lat, long, city_pop from transactions',
+            'querey': "select distinct customer_id, cc_num, first, last, gender, dob, age, job, street, city, state, zip, lat, long, city_pop from transactions WHERE event_time::date = CURRENT_DATE - INTERVAL '1 day'",
             'file_name': 'customer_data'})
         
         
@@ -102,26 +102,26 @@ with DAG(
         task_id='extract_transaction_data',
         python_callable=extract_data_from_postgres_and_save_it_to_csv,
         op_kwargs={
-            'querey': 'select trans_num, trans_date_trans_time, customer_id, merchant_id, amt, distance_km, is_fraud, unix_time from transactions',
+            'querey': "select trans_num, trans_date_trans_time, customer_id, merchant_id, amt, distance_km, is_fraud, unix_time from transactions WHERE event_time::date = CURRENT_DATE - INTERVAL '1 day'",
             'file_name': 'transaction_data'})
 
     # --------------------------------------------------------------------------------------- #
     # Loading merschent data into airflow staging area
     loding_merschent_csv_into_staging = PythonOperator(
         task_id='load_merchant_data_into_staging',
-        python_callable=load_csv_to_snowflake,
+        python_callable=loaad_csv_to_staging_area,
         op_kwargs={'CSV_PATH': '/opt/airflow/dags/stagging/merchant_data.csv'})
 
     # Loading customer data into airflow staging area
     loding_customer_csv_into_staging = PythonOperator(
         task_id='load_customer_data_into_staging',
-        python_callable=load_csv_to_snowflake,
+        python_callable=loaad_csv_to_staging_area,
         op_kwargs={'CSV_PATH': '/opt/airflow/dags/stagging/customer_data.csv'})
 
     # Loading transaction data into airflow staging area
     loding_transaction_csv_into_staging = PythonOperator(
         task_id='load_transaction_data_into_staging',
-        python_callable=load_csv_to_snowflake,
+        python_callable=loaad_csv_to_staging_area,
         op_kwargs={'CSV_PATH': '/opt/airflow/dags/stagging/transaction_data.csv'})
 
     # --------------------------------------------------------------------------------------- #
