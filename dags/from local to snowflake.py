@@ -1,5 +1,6 @@
 from airflow import DAG
 from airflow.operators.python import PythonOperator
+from airflow.utils.task_group import TaskGroup
 from datetime import timedelta,datetime
 import snowflake.connector
 import psycopg2
@@ -37,6 +38,7 @@ def connect_to_snowflake():
     return cur , conn
 
 
+
 # Function to extract data from Postgres and save it to a CSV file
 def extract_data_from_postgres_and_save_it_to_csv(querey, file_name):
     conn, cur = connect_to_Postgres()
@@ -55,6 +57,14 @@ def loaad_csv_to_staging_area(CSV_PATH):
         cursor.execute(f"PUT file://{CSV_PATH} @AIRFLOW_STAGE OVERWRITE = TRUE")
     finally:
         cursor.close()
+
+# Function to remove duplicates from a table in Snowflake
+def remove_duplicates_from(query):
+    conn, cur = connect_to_snowflake()
+    try:
+        cur.execute(query)
+    except Exception as e:
+        print(f"Error executing query: {e}")
 
 # Function to load CSV data into Snowflake staging area and then into targeted table
 def load_csv_to_snowflake(CSV_FILE_NAME,table_name):
@@ -154,6 +164,60 @@ with DAG(
             'table_name': 'transactions_fact'
         }
     )
+    # --------------------------------------------------------------------------------------- #
+    # Remove duplicates from customer_dim table
+    remove_duplicates_customer_dim = PythonOperator(
+        task_id='remove_duplicates_customer_dim',
+        python_callable=remove_duplicates_from,
+        op_kwargs={
+            'query': """
+                        CREATE TEMPORARY TABLE temp_table AS
+                        SELECT DISTINCT * FROM customer_dim;
+
+                        -- Step 2: Truncate the original table
+                        TRUNCATE TABLE customer_dim;
+
+                        -- Step 3: Insert back into original
+                        INSERT INTO customer_dim
+                        SELECT * FROM temp_table;
+
+                        DROP TABLE temp_table;
+                    """
+        }
+    )
+    # Remove duplicates from merchant_dim table
+    remove_duplicates_merchant_dim = PythonOperator(
+        task_id='remove_duplicates_merchant_dim',
+        python_callable=remove_duplicates_from,
+        op_kwargs={
+            'query': """
+                        CREATE TEMPORARY TABLE temp_table AS
+                        SELECT DISTINCT * FROM merchant_dim;
+
+                        -- Step 2: Truncate the original table
+                        TRUNCATE TABLE merchant_dim;
+
+                        -- Step 3: Insert back into original
+                        INSERT INTO merchant_dim
+                        SELECT * FROM temp_table;
+
+                        DROP TABLE temp_table;
+                    """
+        }
+    )
 
 
-[merschant_data_extraction>>loding_merschent_csv_into_staging>> merschent_dim_loding, customer_data_extraction>>loding_customer_csv_into_staging>>customer_dim_loding]>>transaction_data_extraction>>loding_transaction_csv_into_staging>>fact_loding
+# adding tasks to task groups for merchant ETL
+with TaskGroup("merchant_dim_pipeline") as merchant_dim_pipeline:
+    merschant_data_extraction >> loding_merschent_csv_into_staging >> merschent_dim_loding >> remove_duplicates_merchant_dim
+
+# adding tasks to task groups for customer ETL
+with TaskGroup("customer_dim_pipeline") as customer_dim_pipeline:
+    customer_data_extraction >> loding_customer_csv_into_staging >> customer_dim_loding >> remove_duplicates_customer_dim
+
+# Final dependency chain
+[merchant_dim_pipeline, customer_dim_pipeline] >> transaction_data_extraction >> loding_transaction_csv_into_staging >> fact_loding
+
+
+
+# [merschant_data_extraction>>loding_merschent_csv_into_staging>> merschent_dim_loding >> remove_duplicates_merchant_dim, customer_data_extraction>>loding_customer_csv_into_staging>>customer_dim_loding>>remove_duplicates_customer_dim]>>transaction_data_extraction>>loding_transaction_csv_into_staging>>fact_loding
