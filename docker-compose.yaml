@@ -220,83 +220,83 @@ services:
       - kafka
       - postgres
 
-  hadoop-namenode:
-    image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
-    container_name: hadoop-namenode
-    environment:
-      - CLUSTER_NAME=hadoop-cluster
-      - CORE_CONF_fs_defaultFS=hdfs://hadoop-namenode:9000
-      - HDFS_CONF_dfs_namenode_rpc-address=hadoop-namenode:9000
-    ports:
-      - "9870:9870"
-      - "9000:9000"
-    volumes:
-      - hadoop-namenode:/hadoop/dfs/name
-    networks:
-      sparknet:
-        ipv4_address: 172.30.1.21
+  # hadoop-namenode:
+  #   image: bde2020/hadoop-namenode:2.0.0-hadoop3.2.1-java8
+  #   container_name: hadoop-namenode
+  #   environment:
+  #     - CLUSTER_NAME=hadoop-cluster
+  #     - CORE_CONF_fs_defaultFS=hdfs://hadoop-namenode:9000
+  #     - HDFS_CONF_dfs_namenode_rpc-address=hadoop-namenode:9000
+  #   ports:
+  #     - "9870:9870"
+  #     - "9000:9000"
+  #   volumes:
+  #     - hadoop-namenode:/hadoop/dfs/name
+  #   networks:
+  #     sparknet:
+  #       ipv4_address: 172.30.1.21
 
-  hadoop-datanode1:
-    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
-    container_name: hadoop-datanode1
-    environment:
-      - CLUSTER_NAME=hadoop-cluster
-      - CORE_CONF_fs_defaultFS=hdfs://hadoop-namenode:9000
-      - HDFS_CONF_dfs_namenode_rpc-address=hadoop-namenode:9000
-      - HDFS_CONF_dfs_datanode_hostname=hadoop-datanode1
-    ports:
-      - "9864:9864"
-      - "9866:9866"
-      - "9867:9867"
-    volumes:
-      - hadoop-datanode1:/hadoop/dfs/data
-    networks:
-      sparknet:
-        ipv4_address: 172.30.1.22
-    depends_on:
-      - hadoop-namenode
+  # hadoop-datanode1:
+  #   image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+  #   container_name: hadoop-datanode1
+  #   environment:
+  #     - CLUSTER_NAME=hadoop-cluster
+  #     - CORE_CONF_fs_defaultFS=hdfs://hadoop-namenode:9000
+  #     - HDFS_CONF_dfs_namenode_rpc-address=hadoop-namenode:9000
+  #     - HDFS_CONF_dfs_datanode_hostname=hadoop-datanode1
+  #   ports:
+  #     - "9864:9864"
+  #     - "9866:9866"
+  #     - "9867:9867"
+  #   volumes:
+  #     - hadoop-datanode1:/hadoop/dfs/data
+  #   networks:
+  #     sparknet:
+  #       ipv4_address: 172.30.1.22
+  #   depends_on:
+  #     - hadoop-namenode
 
-  hadoop-datanode2:
-    image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
-    container_name: hadoop-datanode2
-    environment:
-      - CLUSTER_NAME=hadoop-cluster
-      - CORE_CONF_fs_defaultFS=hdfs://hadoop-namenode:9000
-      - HDFS_CONF_dfs_namenode_rpc-address=hadoop-namenode:9000
-      - HDFS_CONF_dfs_datanode_hostname=hadoop-datanode2
-    ports:
-      - "9865:9864"
-      - "9868:9866"
-      - "9869:9867"
-    volumes:
-      - hadoop-datanode2:/hadoop/dfs/data
-    networks:
-      sparknet:
-        ipv4_address: 172.30.1.23
-    depends_on:
-      - hadoop-namenode
+  # hadoop-datanode2:
+  #   image: bde2020/hadoop-datanode:2.0.0-hadoop3.2.1-java8
+  #   container_name: hadoop-datanode2
+  #   environment:
+  #     - CLUSTER_NAME=hadoop-cluster
+  #     - CORE_CONF_fs_defaultFS=hdfs://hadoop-namenode:9000
+  #     - HDFS_CONF_dfs_namenode_rpc-address=hadoop-namenode:9000
+  #     - HDFS_CONF_dfs_datanode_hostname=hadoop-datanode2
+  #   ports:
+  #     - "9865:9864"
+  #     - "9868:9866"
+  #     - "9869:9867"
+  #   volumes:
+  #     - hadoop-datanode2:/hadoop/dfs/data
+  #   networks:
+  #     sparknet:
+  #       ipv4_address: 172.30.1.23
+  #   depends_on:
+  #     - hadoop-namenode
 
-  hadoop-resourcemanager:
-    image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
-    container_name: hadoop-resourcemanager
-    environment:
-      - YARN_RESOURCEMANAGER_HOSTNAME=hadoop-resourcemanager
-    ports:
-      - "8088:8088"
-    networks:
-      sparknet:
-        ipv4_address: 172.30.1.24
-    depends_on:
-      - hadoop-namenode
+  # hadoop-resourcemanager:
+  #   image: bde2020/hadoop-resourcemanager:2.0.0-hadoop3.2.1-java8
+  #   container_name: hadoop-resourcemanager
+  #   environment:
+  #     - YARN_RESOURCEMANAGER_HOSTNAME=hadoop-resourcemanager
+  #   ports:
+  #     - "8088:8088"
+  #   networks:
+  #     sparknet:
+  #       ipv4_address: 172.30.1.24
+  #   depends_on:
+  #     - hadoop-namenode
 
-  hadoop-nodemanager:
-    image: bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8
-    container_name: hadoop-nodemanager
-    networks:
-      sparknet:
-        ipv4_address: 172.30.1.25
-    depends_on:
-      - hadoop-resourcemanager
+  # hadoop-nodemanager:
+  #   image: bde2020/hadoop-nodemanager:2.0.0-hadoop3.2.1-java8
+  #   container_name: hadoop-nodemanager
+  #   networks:
+  #     sparknet:
+  #       ipv4_address: 172.30.1.25
+  #   depends_on:
+  #     - hadoop-resourcemanager
 
 
   grafana:
@@ -319,7 +319,7 @@ services:
 volumes:
   pgdata:
   postgres-db-volume:
-  hadoop-namenode:
-  hadoop-datanode1:
-  hadoop-datanode2:
+  # hadoop-namenode:
+  # hadoop-datanode1:
+  # hadoop-datanode2:
   grafana-storage:
