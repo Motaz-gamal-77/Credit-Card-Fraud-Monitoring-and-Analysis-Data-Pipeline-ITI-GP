@@ -59,12 +59,14 @@ def loaad_csv_to_staging_area(CSV_PATH):
         cursor.close()
 
 # Function to remove duplicates from a table in Snowflake
-def remove_duplicates_from(query):
-    conn, cur = connect_to_snowflake()
-    try:
-        cur.execute(query)
-    except Exception as e:
-        print(f"Error executing query: {e}")
+def remove_duplicates_from(query1,query2,query3,query4):
+    cursor , conn = connect_to_snowflake()
+    cursor.execute(query1)  # Create temporary table with distinct records
+    cursor.execute(query2)  # Truncate the original table
+    cursor.execute(query3)  # Insert distinct records back into the original table
+    cursor.execute(query4)  # Drop the temporary table
+    conn.commit()  # Commit the changes
+    cursor.close()
 
 # Function to load CSV data into Snowflake staging area and then into targeted table
 def load_csv_to_snowflake(CSV_FILE_NAME,table_name):
@@ -170,54 +172,26 @@ with DAG(
         task_id='remove_duplicates_customer_dim',
         python_callable=remove_duplicates_from,
         op_kwargs={
-            'query': """
-                        CREATE TEMPORARY TABLE temp_table AS
-                        SELECT DISTINCT * FROM customer_dim;
-
-                        -- Step 2: Truncate the original table
-                        TRUNCATE TABLE customer_dim;
-
-                        -- Step 3: Insert back into original
-                        INSERT INTO customer_dim
-                        SELECT * FROM temp_table;
-
-                        DROP TABLE temp_table;
-                    """
+            'query1': """ CREATE TEMPORARY TABLE temp_table AS SELECT DISTINCT * FROM customer_dim; """,
+            'query2': """ TRUNCATE TABLE customer_dim; """,
+            'query3': """ INSERT INTO customer_dim SELECT * FROM temp_table; """,
+            'query4': """ DROP TABLE temp_table; """
         }
     )
     # Remove duplicates from merchant_dim table
     remove_duplicates_merchant_dim = PythonOperator(
         task_id='remove_duplicates_merchant_dim',
-        python_callable=remove_duplicates_from,
+        python_callable=remove_duplicates_from,    
         op_kwargs={
-            'query': """
-                        CREATE TEMPORARY TABLE temp_table AS
-                        SELECT DISTINCT * FROM merchant_dim;
-
-                        -- Step 2: Truncate the original table
-                        TRUNCATE TABLE merchant_dim;
-
-                        -- Step 3: Insert back into original
-                        INSERT INTO merchant_dim
-                        SELECT * FROM temp_table;
-
-                        DROP TABLE temp_table;
-                    """
+            'query1': """ CREATE TEMPORARY TABLE temp_table2 AS SELECT DISTINCT * FROM merchant_dim; """,
+            'query2': """ TRUNCATE TABLE merchant_dim; """,
+            'query3': """ INSERT INTO merchant_dim SELECT * FROM temp_table; """,
+            'query4': """ DROP TABLE temp_table2; """
         }
     )
 
 
-# adding tasks to task groups for merchant ETL
-with TaskGroup("merchant_dim_pipeline") as merchant_dim_pipeline:
-    merschant_data_extraction >> loding_merschent_csv_into_staging >> merschent_dim_loding >> remove_duplicates_merchant_dim
-
-# adding tasks to task groups for customer ETL
-with TaskGroup("customer_dim_pipeline") as customer_dim_pipeline:
-    customer_data_extraction >> loding_customer_csv_into_staging >> customer_dim_loding >> remove_duplicates_customer_dim
-
-# Final dependency chain
-[merchant_dim_pipeline, customer_dim_pipeline] >> transaction_data_extraction >> loding_transaction_csv_into_staging >> fact_loding
 
 
 
-# [merschant_data_extraction>>loding_merschent_csv_into_staging>> merschent_dim_loding >> remove_duplicates_merchant_dim, customer_data_extraction>>loding_customer_csv_into_staging>>customer_dim_loding>>remove_duplicates_customer_dim]>>transaction_data_extraction>>loding_transaction_csv_into_staging>>fact_loding
+[merschant_data_extraction>>loding_merschent_csv_into_staging>> merschent_dim_loding >> remove_duplicates_merchant_dim, customer_data_extraction>>loding_customer_csv_into_staging>>customer_dim_loding>>remove_duplicates_customer_dim]>>transaction_data_extraction>>loding_transaction_csv_into_staging>>fact_loding
