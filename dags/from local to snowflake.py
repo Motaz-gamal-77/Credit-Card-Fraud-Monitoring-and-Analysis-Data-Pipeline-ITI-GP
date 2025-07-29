@@ -87,7 +87,7 @@ def load_csv_to_snowflake(CSV_FILE_NAME,table_name):
 # Main DAG definition
 with DAG(
     dag_id='list_snowflake_tables',
-    start_date=datetime(2024, 1, 1),
+    start_date=datetime(2025, 7, 29),
     schedule_interval='0 1 * * *',
     catchup=False
 ) as dag:
