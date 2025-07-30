@@ -44,7 +44,7 @@ def extract_data_from_postgres_and_save_it_to_csv(querey, file_name):
     conn, cur = connect_to_Postgres()
     try:
         df = pd.read_sql(querey, conn)
-        df.to_csv(f'/opt/airflow/dags/stagging/{file_name}.csv', index=False)
+        df.to_csv(f'/opt/airflow/data/stagging/{file_name}.csv', index=False)
     finally:
         cur.close() 
         conn.close()
@@ -122,19 +122,19 @@ with DAG(
     loding_merschent_csv_into_staging = PythonOperator(
         task_id='load_merchant_data_into_staging',
         python_callable=loaad_csv_to_staging_area,
-        op_kwargs={'CSV_PATH': '/opt/airflow/dags/stagging/merchant_data.csv'})
+        op_kwargs={'CSV_PATH': '/opt/airflow/data/stagging/merchant_data.csv'})
 
     # Loading customer data into airflow staging area
     loding_customer_csv_into_staging = PythonOperator(
         task_id='load_customer_data_into_staging',
         python_callable=loaad_csv_to_staging_area,
-        op_kwargs={'CSV_PATH': '/opt/airflow/dags/stagging/customer_data.csv'})
+        op_kwargs={'CSV_PATH': '/opt/airflow/data/stagging/customer_data.csv'})
 
     # Loading transaction data into airflow staging area
     loding_transaction_csv_into_staging = PythonOperator(
         task_id='load_transaction_data_into_staging',
         python_callable=loaad_csv_to_staging_area,
-        op_kwargs={'CSV_PATH': '/opt/airflow/dags/stagging/transaction_data.csv'})
+        op_kwargs={'CSV_PATH': '/opt/airflow/data/stagging/transaction_data.csv'})
 
     # --------------------------------------------------------------------------------------- #
     # Loading merschent data from airflow staging area and then into targeted table
