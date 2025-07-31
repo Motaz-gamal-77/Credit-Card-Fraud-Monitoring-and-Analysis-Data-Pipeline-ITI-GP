@@ -6,4 +6,3 @@ CREATE TABLE merchant_Dim (
     merch_long DOUBLE PRECISION,
     mech_lat DOUBLE PRECISION   
 );
-

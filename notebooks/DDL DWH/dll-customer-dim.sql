@@ -1,4 +1,3 @@
--- 1. Dimension: customer_Dim
 CREATE TABLE customer_Dim (
     customer_id VARCHAR PRIMARY KEY,
     cc_num VARCHAR,
