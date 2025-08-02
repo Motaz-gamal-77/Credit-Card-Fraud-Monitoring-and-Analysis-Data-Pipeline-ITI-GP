@@ -97,7 +97,7 @@ with DAG(
         task_id='exrtract_merchant_data',
         python_callable=extract_data_from_postgres_and_save_it_to_csv,
         op_kwargs={
-            'querey': "select distinct merchant_id, merchant, category, merch_long, merch_lat from transactions WHERE event_time::date = CURRENT_DATE - INTERVAL '1 day' ",
+            'querey': "select distinct on (merchant_id) merchant_id, merchant, category, merch_long, merch_lat from transactions WHERE event_time::date = CURRENT_DATE - INTERVAL '1 day' ",
             'file_name': 'merchant_data'})
     
     # # extracting customer data from postgres and saving it to csv
@@ -105,7 +105,7 @@ with DAG(
         task_id='exrtract_customer_data',
         python_callable=extract_data_from_postgres_and_save_it_to_csv,
         op_kwargs={
-            'querey': "select distinct customer_id, cc_num, first, last, gender, dob, age, job, street, city, state, zip, lat, long, city_pop from transactions WHERE event_time::date = CURRENT_DATE - INTERVAL '1 day'",
+            'querey': "select distinct on (customer_id) customer_id, cc_num, first, last, gender, dob, age, job, street, city, state, zip, lat, long, city_pop from transactions WHERE event_time::date = CURRENT_DATE - INTERVAL '1 day'",
             'file_name': 'customer_data'})
         
         
