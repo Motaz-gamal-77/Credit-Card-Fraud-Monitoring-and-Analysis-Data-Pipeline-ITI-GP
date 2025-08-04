@@ -1,3 +1,6 @@
+# System Architecture
+
+![System Architecture](/Docs/full_arch.png)
 # 🐳 Dockerized Data Engineering Stack
 
 A fully integrated Docker-based environment for building modern data engineering pipelines with:
