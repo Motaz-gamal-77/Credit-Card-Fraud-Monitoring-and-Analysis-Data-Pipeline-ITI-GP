@@ -25,7 +25,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "d750e42c-c535-497c-9eb7-beb37cfb63c0"
+        "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
       },
       "fieldConfig": {
         "defaults": {
@@ -80,7 +80,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "d750e42c-c535-497c-9eb7-beb37cfb63c0"
+            "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
           },
           "editorMode": "code",
           "format": "table",
@@ -112,7 +112,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "d750e42c-c535-497c-9eb7-beb37cfb63c0"
+        "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
       },
       "fieldConfig": {
         "defaults": {
@@ -216,7 +216,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "d750e42c-c535-497c-9eb7-beb37cfb63c0"
+            "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
           },
           "editorMode": "code",
           "format": "table",
@@ -248,7 +248,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "d750e42c-c535-497c-9eb7-beb37cfb63c0"
+        "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
       },
       "fieldConfig": {
         "defaults": {
@@ -328,7 +328,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "d750e42c-c535-497c-9eb7-beb37cfb63c0"
+            "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
           },
           "editorMode": "code",
           "format": "table",
@@ -360,7 +360,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "d750e42c-c535-497c-9eb7-beb37cfb63c0"
+        "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
       },
       "fieldConfig": {
         "defaults": {
@@ -440,7 +440,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "d750e42c-c535-497c-9eb7-beb37cfb63c0"
+            "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
           },
           "editorMode": "code",
           "format": "table",
@@ -472,7 +472,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "d750e42c-c535-497c-9eb7-beb37cfb63c0"
+        "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
       },
       "fieldConfig": {
         "defaults": {
@@ -504,7 +504,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -516,7 +517,7 @@
         "overrides": []
       },
       "gridPos": {
-        "h": 13,
+        "h": 16,
         "w": 24,
         "x": 0,
         "y": 16
@@ -548,7 +549,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "d750e42c-c535-497c-9eb7-beb37cfb63c0"
+            "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
           },
           "editorMode": "code",
           "format": "table",
@@ -638,7 +639,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "d750e42c-c535-497c-9eb7-beb37cfb63c0"
+        "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
       },
       "fieldConfig": {
         "defaults": {
@@ -663,9 +664,9 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 12,
+        "w": 6,
         "x": 0,
-        "y": 29
+        "y": 32
       },
       "id": 1,
       "options": {
@@ -685,7 +686,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "d750e42c-c535-497c-9eb7-beb37cfb63c0"
+            "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
           },
           "editorMode": "code",
           "format": "table",
@@ -711,13 +712,93 @@
           }
         }
       ],
-      "title": "Total Fraud Transactions",
+      "title": "Total Number Fraud Transactions",
       "type": "gauge"
     },
     {
       "datasource": {
         "type": "postgres",
-        "uid": "d750e42c-c535-497c-9eb7-beb37cfb63c0"
+        "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+      },
+      "fieldConfig": {
+        "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green"
+              },
+              {
+                "color": "orange",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 6,
+        "x": 6,
+        "y": 32
+      },
+      "id": 9,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": false
+      },
+      "pluginVersion": "10.0.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+          },
+          "editorMode": "code",
+          "format": "table",
+          "rawQuery": true,
+          "rawSql": "select\r\n  sum(amt)\r\nfrom\r\n  transactions\r\nwhere\r\n  is_fraud = 1;",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "parameters": [],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          }
+        }
+      ],
+      "title": "Total amount of Fraud $",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
       },
       "fieldConfig": {
         "defaults": {
@@ -764,7 +845,7 @@
         "h": 8,
         "w": 12,
         "x": 12,
-        "y": 29
+        "y": 32
       },
       "id": 3,
       "options": {
@@ -792,7 +873,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "d750e42c-c535-497c-9eb7-beb37cfb63c0"
+            "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
           },
           "editorMode": "code",
           "format": "table",
@@ -824,7 +905,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "d750e42c-c535-497c-9eb7-beb37cfb63c0"
+        "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
       },
       "fieldConfig": {
         "defaults": {
@@ -858,7 +939,7 @@
         "h": 13,
         "w": 24,
         "x": 0,
-        "y": 37
+        "y": 40
       },
       "id": 6,
       "options": {
@@ -878,12 +959,12 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "d750e42c-c535-497c-9eb7-beb37cfb63c0"
+            "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
           },
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  event_time,\r\n  cc_num,\r\n  merchant,\r\n  category,\r\n  amt,\r\n  city,\r\n  state\r\nFROM\r\n  transactions\r\nWHERE\r\n  $__timeFilter(event_time)\r\n  AND is_fraud = 1\r\nORDER BY\r\n  event_time DESC",
+          "rawSql": "SELECT\r\n  event_time,\r\n  cc_num,\r\n  merchant,\r\n  category,\r\n  amt,\r\n  city,\r\n  state,\r\n  is_fraud\r\nFROM\r\n  transactions\r\nWHERE\r\n  $__timeFilter(event_time)\r\n  AND is_fraud = 1\r\nORDER BY\r\n  event_time DESC",
           "refId": "A",
           "sql": {
             "columns": [
@@ -904,7 +985,7 @@
           }
         }
       ],
-      "title": "Legitimate Transactions Details",
+      "title": "Fraud Transactions Details",
       "type": "table"
     }
   ],
@@ -923,6 +1004,6 @@
   "timezone": "",
   "title": "Real Time Credit Card Fraud Cases Monitoring",
   "uid": "ee1bfb42-4456-4cda-8599-57dd758376a9",
-  "version": 2,
+  "version": 3,
   "weekStart": ""
 }
