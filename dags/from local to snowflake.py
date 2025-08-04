@@ -86,7 +86,7 @@ def load_csv_to_snowflake(CSV_FILE_NAME,table_name):
         
 # Main DAG definition
 with DAG(
-    dag_id='list_snowflake_tables',
+    dag_id='ETL_from_postgres_to_snowflake',
     start_date=datetime(2025, 7, 29),
     schedule_interval='0 1 * * *',
     catchup=False
