@@ -27,9 +27,9 @@ def connect_to_Postgres():
 def connect_to_snowflake():
     # Connect to Snowflake
     conn = snowflake.connector.connect(
-        user='MOATAZGAMAL710',
-        password='@123456789123Dwh',  # Ideally use os.environ.get('snowflake_pass')
-        account='YREDIGW-DB28773',
+	    user='WAHDAN',
+        password='Wahdan_wahdan6666',
+        account='UBBXFAJ-GDB29522',
         warehouse='COMPUTE_WH',
         database='FRAUD_DWH',
         schema='PUBLIC'
