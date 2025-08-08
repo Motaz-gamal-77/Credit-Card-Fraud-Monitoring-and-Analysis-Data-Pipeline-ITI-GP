@@ -1,5 +1,6 @@
 # Ignore Data and logs folders
 data/
 logs/
+jars/
 ITI_DE_Pipeline_Project.pem
 install docker on EC2.sh
