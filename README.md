@@ -102,7 +102,7 @@ These map **host directories** to container paths for code, configs, and data sh
 ├── notebooks/        ← Jupyter notebooks
 ├── jars/             ← Spark JARs (for Kafka, hadoop, etc.)
 ├── docker-compose.yml
-└── file.md           ← This documentation
+└── ReadMe.md           ← This documentation
 
 ```
 ## Connect with me
