@@ -94,15 +94,18 @@ These map **host directories** to container paths for code, configs, and data sh
 
 ```text
 .
-├── dags/             ← Airflow DAGs
-├── logs/             ← Airflow logs
-├── config/           ← Optional Airflow configs
-├── plugins/          ← Custom Airflow plugins
-├── data/             ← Input/output data folder
-├── notebooks/        ← Jupyter notebooks
-├── jars/             ← Spark JARs (for Kafka, hadoop, etc.)
-├── docker-compose.yml
-└── ReadMe.md           ← This documentation
+├── dags/              ← Airflow DAGs
+├── logs/              ← Airflow logs
+├── config/            ← Optional Airflow configs
+├── plugins/           ← Custom Airflow plugins
+├── data/              ← Input/output data folder
+├── notebooks/         ← Jupyter notebooks
+├── SQL Scripts/       ← SQL DDL and Queries 
+├── Bash Scripts/      ← Bash Scripts for automation 
+├── jars/              ← Spark JARs (for Kafka, hadoop, etc.)
+├── docker-compose.yml ← Spark JARs (for Kafka, hadoop, etc.)
+├── gitignore          ← Ignored files by git
+└── ReadMe.md          ← This documentation
 
 ```
 ## Connect with me
