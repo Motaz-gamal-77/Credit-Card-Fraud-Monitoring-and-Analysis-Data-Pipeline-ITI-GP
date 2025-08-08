@@ -20,9 +20,9 @@ papermill /home/jovyan/work/Spark-Streaming/Cleaning_Treansformations.ipynb /hom
 echo $! >> "$PID_FILE"    # Save PID of consumer
 
 
-# # Run Spark_hdfs consumer
-# papermill /home/jovyan/work/Spark-Streaming/readKafkaWriteHadoop.ipynb /home/jovyan/work/Spark-Streaming/readKafkaWriteHadoop.ipynb -k python3 --log-output &
-# echo $! >> "$PID_FILE"    # Save PID of consumer
+# Run Spark_hdfs consumer
+papermill /home/jovyan/work/Spark-Streaming/readKafkaWriteHadoop.ipynb /home/jovyan/work/Spark-Streaming/readKafkaWriteHadoop.ipynb -k python3 --log-output &
+echo $! >> "$PID_FILE"    # Save PID of consumer
 
 echo "Producer and Consumer started. PIDs saved in $PID_FILE"
 
