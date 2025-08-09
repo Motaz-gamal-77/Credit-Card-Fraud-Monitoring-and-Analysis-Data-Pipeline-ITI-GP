@@ -18,14 +18,14 @@
   "editable": true,
   "fiscalYearStartMonth": 0,
   "graphTooltip": 0,
-  "id": 3,
+  "id": 1,
   "links": [],
   "liveNow": false,
   "panels": [
     {
       "datasource": {
         "type": "postgres",
-        "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+        "uid": "e59350a1-284c-458c-8234-695ebae65a87"
       },
       "fieldConfig": {
         "defaults": {
@@ -80,7 +80,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+            "uid": "e59350a1-284c-458c-8234-695ebae65a87"
           },
           "editorMode": "code",
           "format": "table",
@@ -112,7 +112,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+        "uid": "e59350a1-284c-458c-8234-695ebae65a87"
       },
       "fieldConfig": {
         "defaults": {
@@ -216,7 +216,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+            "uid": "e59350a1-284c-458c-8234-695ebae65a87"
           },
           "editorMode": "code",
           "format": "table",
@@ -248,7 +248,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+        "uid": "e59350a1-284c-458c-8234-695ebae65a87"
       },
       "fieldConfig": {
         "defaults": {
@@ -328,7 +328,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+            "uid": "e59350a1-284c-458c-8234-695ebae65a87"
           },
           "editorMode": "code",
           "format": "table",
@@ -360,7 +360,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+        "uid": "e59350a1-284c-458c-8234-695ebae65a87"
       },
       "fieldConfig": {
         "defaults": {
@@ -440,7 +440,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+            "uid": "e59350a1-284c-458c-8234-695ebae65a87"
           },
           "editorMode": "code",
           "format": "table",
@@ -472,7 +472,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+        "uid": "e59350a1-284c-458c-8234-695ebae65a87"
       },
       "fieldConfig": {
         "defaults": {
@@ -549,7 +549,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+            "uid": "e59350a1-284c-458c-8234-695ebae65a87"
           },
           "editorMode": "code",
           "format": "table",
@@ -639,7 +639,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+        "uid": "e59350a1-284c-458c-8234-695ebae65a87"
       },
       "fieldConfig": {
         "defaults": {
@@ -651,7 +651,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -686,12 +687,12 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+            "uid": "e59350a1-284c-458c-8234-695ebae65a87"
           },
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  SUM(is_fraud)\r\nFROM\r\n  transactions",
+          "rawSql": "SELECT\r\n  SUM(is_fraud)\r\nFROM\r\n  transactions\r\nWHERE\r\n  $__timeFilter(event_time);",
           "refId": "A",
           "sql": {
             "columns": [
@@ -718,7 +719,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+        "uid": "e59350a1-284c-458c-8234-695ebae65a87"
       },
       "fieldConfig": {
         "defaults": {
@@ -727,7 +728,8 @@
             "mode": "percentage",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "orange",
@@ -766,12 +768,12 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+            "uid": "e59350a1-284c-458c-8234-695ebae65a87"
           },
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "select\r\n  sum(amt)\r\nfrom\r\n  transactions\r\nwhere\r\n  is_fraud = 1;",
+          "rawSql": "select\r\n  sum(amt)\r\nfrom\r\n  transactions\r\nwhere\r\n  is_fraud = 1 and $__timeFilter(event_time);",
           "refId": "A",
           "sql": {
             "columns": [
@@ -798,7 +800,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+        "uid": "e59350a1-284c-458c-8234-695ebae65a87"
       },
       "fieldConfig": {
         "defaults": {
@@ -830,7 +832,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -873,7 +876,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+            "uid": "e59350a1-284c-458c-8234-695ebae65a87"
           },
           "editorMode": "code",
           "format": "table",
@@ -905,7 +908,7 @@
     {
       "datasource": {
         "type": "postgres",
-        "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+        "uid": "e59350a1-284c-458c-8234-695ebae65a87"
       },
       "fieldConfig": {
         "defaults": {
@@ -924,7 +927,8 @@
             "mode": "absolute",
             "steps": [
               {
-                "color": "green"
+                "color": "green",
+                "value": null
               },
               {
                 "color": "red",
@@ -959,7 +963,7 @@
         {
           "datasource": {
             "type": "postgres",
-            "uid": "d85d941f-c102-4dca-80a6-59a062dd27a7"
+            "uid": "e59350a1-284c-458c-8234-695ebae65a87"
           },
           "editorMode": "code",
           "format": "table",
@@ -997,7 +1001,7 @@
     "list": []
   },
   "time": {
-    "from": "now-6h",
+    "from": "now-15m",
     "to": "now"
   },
   "timepicker": {},
