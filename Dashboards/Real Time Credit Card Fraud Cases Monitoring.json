@@ -643,6 +643,93 @@
       },
       "fieldConfig": {
         "defaults": {
+          "mappings": [],
+          "thresholds": {
+            "mode": "percentage",
+            "steps": [
+              {
+                "color": "green",
+                "value": null
+              },
+              {
+                "color": "orange",
+                "value": 70
+              },
+              {
+                "color": "red",
+                "value": 85
+              }
+            ]
+          }
+        },
+        "overrides": []
+      },
+      "gridPos": {
+        "h": 8,
+        "w": 4,
+        "x": 0,
+        "y": 32
+      },
+      "id": 10,
+      "options": {
+        "orientation": "auto",
+        "reduceOptions": {
+          "calcs": [
+            "lastNotNull"
+          ],
+          "fields": "",
+          "values": false
+        },
+        "showThresholdLabels": false,
+        "showThresholdMarkers": true
+      },
+      "pluginVersion": "10.0.3",
+      "targets": [
+        {
+          "datasource": {
+            "type": "postgres",
+            "uid": "e59350a1-284c-458c-8234-695ebae65a87"
+          },
+          "editorMode": "builder",
+          "format": "table",
+          "rawSql": "SELECT COUNT(cc_num) FROM transactions LIMIT 50 ",
+          "refId": "A",
+          "sql": {
+            "columns": [
+              {
+                "name": "COUNT",
+                "parameters": [
+                  {
+                    "name": "cc_num",
+                    "type": "functionParameter"
+                  }
+                ],
+                "type": "function"
+              }
+            ],
+            "groupBy": [
+              {
+                "property": {
+                  "type": "string"
+                },
+                "type": "groupBy"
+              }
+            ],
+            "limit": 50
+          },
+          "table": "transactions"
+        }
+      ],
+      "title": "Total Number Transactions",
+      "type": "gauge"
+    },
+    {
+      "datasource": {
+        "type": "postgres",
+        "uid": "e59350a1-284c-458c-8234-695ebae65a87"
+      },
+      "fieldConfig": {
+        "defaults": {
           "color": {
             "mode": "thresholds"
           },
@@ -665,8 +752,8 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 6,
-        "x": 0,
+        "w": 4,
+        "x": 4,
         "y": 32
       },
       "id": 1,
@@ -746,8 +833,8 @@
       },
       "gridPos": {
         "h": 8,
-        "w": 6,
-        "x": 6,
+        "w": 4,
+        "x": 8,
         "y": 32
       },
       "id": 9,
@@ -1008,6 +1095,6 @@
   "timezone": "",
   "title": "Real Time Credit Card Fraud Cases Monitoring",
   "uid": "ee1bfb42-4456-4cda-8599-57dd758376a9",
-  "version": 3,
+  "version": 4,
   "weekStart": ""
 }
