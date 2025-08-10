@@ -172,7 +172,7 @@ with DAG(
         task_id='remove_duplicates_customer_dim',
         python_callable=remove_duplicates_from,
         op_kwargs={
-            'query1': """ CREATE TEMPORARY TABLE temp_table AS SELECT DISTINCT * FROM customer_dim; """,
+            'query1': """ CREATE TEMPORARY TABLE temp_table AS select trans_num, trans_date_trans_time, customer_id, merchant_id, amt, distance_km, is_fraud, unix_time FROM customer_dim; """,
             'query2': """ TRUNCATE TABLE customer_dim; """,
             'query3': """ INSERT INTO customer_dim SELECT * FROM temp_table; """,
             'query4': """ DROP TABLE temp_table; """
@@ -183,7 +183,7 @@ with DAG(
         task_id='remove_duplicates_merchant_dim',
         python_callable=remove_duplicates_from,    
         op_kwargs={
-            'query1': """ CREATE TEMPORARY TABLE temp_table2 AS SELECT DISTINCT * FROM merchant_dim; """,
+            'query1': """ CREATE TEMPORARY TABLE temp_table2 AS select distinct on (merchant_id) merchant_id,merchant, category, merch_long, merch_lat FROM merchant_dim; """,
             'query2': """ TRUNCATE TABLE merchant_dim; """,
             'query3': """ INSERT INTO merchant_dim SELECT * FROM temp_table2; """,
             'query4': """ DROP TABLE temp_table2; """
