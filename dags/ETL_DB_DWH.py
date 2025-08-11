@@ -113,7 +113,7 @@ def execute_query(query):
 
 incremental_load_to_merchant =  """
                                     MERGE INTO merchant_Dim t
-                                    USING Daily_transactions s
+                                    USING merchant_Dim_s s
                                     ON t.merchant_id = s.merchant_id
                                     WHEN MATCHED THEN UPDATE SET
                                         t.merchant = s.merchant,
@@ -133,7 +133,7 @@ incremental_load_to_merchant =  """
 
 incremental_load_to_customer  =  """
                                     MERGE INTO customer_Dim t
-                                    USING Daily_transactions s
+                                    USING customer_Dim_s s
                                     ON t.customer_id = s.customer_id
                                     WHEN MATCHED THEN UPDATE SET
                                         t.cc_num = s.cc_num,
@@ -159,7 +159,7 @@ incremental_load_to_customer  =  """
 # trans_num, trans_date_trans_time, customer_id, merchant_id, amt, distance_km, is_fraud, unix_time           
 incremental_load_to_transaction =  """
                                     MERGE INTO transactions_fact t
-                                    USING Daily_transactions s
+                                    USING transactions_fact_s s
                                     ON t.trans_num = s.trans_num
                                     WHEN MATCHED THEN UPDATE SET
                                         t.trans_date_trans_time = s.trans_date_trans_time,
@@ -183,35 +183,84 @@ incremental_load_to_transaction =  """
         
 # Main DAG definition
 with DAG(
-    dag_id='ETL_from_postgres_to_snowflake',
+    dag_id='ETL_DAG_From_DB_To_DWH',
     start_date=datetime(2025, 7, 29),
     schedule_interval='10 0 * * *',
     catchup=False
 ) as dag:
     # --------------------------------------------------------------------------------------- #
-    # Extracting all data inserted into transactions table during the last 24 hours and saving it to a CSV file
-    transaction_data_extraction = PythonOperator(
-        task_id='extract_daily_transaction_data',
+    # extracting merschent data from postgres and saving it to csv
+    merschant_data_extraction = PythonOperator(
+        task_id='exrtract_merchant_data',
         python_callable=extract_data_from_postgres_and_save_it_to_csv,
         op_kwargs={
-            'querey': "select * from transactions WHERE event_time::date = CURRENT_DATE - INTERVAL '1 day'",
-            'file_name': 'daily_transaction_data'})
+            'querey': "select distinct on (merchant_id) merchant_id,merchant, category, merch_long, merch_lat from transactions WHERE event_time::date = CURRENT_DATE - INTERVAL '1 day' ",
+            'file_name': 'merchant_data'})
+    
+    # # extracting customer data from postgres and saving it to csv
+    customer_data_extraction = PythonOperator(
+        task_id='exrtract_customer_data',
+        python_callable=extract_data_from_postgres_and_save_it_to_csv,
+        op_kwargs={
+            'querey': "select distinct on (customer_id) customer_id, cc_num, first, last, gender, dob, age, job, street, city, state, zip, lat, long, city_pop from transactions WHERE event_time::date = CURRENT_DATE - INTERVAL '1 day'",
+            'file_name': 'customer_data'})
+        
+        
+    # extracting transaction data from postgres and saving it to csv    
+    transaction_data_extraction = PythonOperator(
+        task_id='extract_transaction_data',
+        python_callable=extract_data_from_postgres_and_save_it_to_csv,
+        op_kwargs={
+            'querey': "select distinct on (trans_num) trans_num, trans_date_trans_time, customer_id, merchant_id, amt, distance_km, is_fraud, unix_time from transactions WHERE event_time::date = CURRENT_DATE - INTERVAL '1 day'",
+            'file_name': 'transaction_data'})
 
     # --------------------------------------------------------------------------------------- #
-    # Loading daily transaction data into airflow staging area
+    # Loading merschent data into airflow staging area
+    loding_merschent_csv_into_staging = PythonOperator(
+        task_id='load_merchant_data_into_staging',
+        python_callable=loaad_csv_to_staging_area,
+        op_kwargs={'CSV_PATH': '/opt/airflow/data/stagging/merchant_data.csv'})
+
+    # Loading customer data into airflow staging area
+    loding_customer_csv_into_staging = PythonOperator(
+        task_id='load_customer_data_into_staging',
+        python_callable=loaad_csv_to_staging_area,
+        op_kwargs={'CSV_PATH': '/opt/airflow/data/stagging/customer_data.csv'})
+
+    # Loading transaction data into airflow staging area
     loding_transaction_csv_into_staging = PythonOperator(
         task_id='load_transaction_data_into_staging',
         python_callable=loaad_csv_to_staging_area,
-        op_kwargs={'CSV_PATH': '/opt/airflow/data/stagging/daily_transaction_data.csv'})
+        op_kwargs={'CSV_PATH': '/opt/airflow/data/stagging/transaction_data.csv'})
 
     # --------------------------------------------------------------------------------------- #
-    # Loading daily transaction data from airflow staging area and then into Source table
-    daily_transaction_data_loading = PythonOperator(
-        task_id='load_daily_transaction_data_into_Source_table_in_snowflake',
+    # Loading merschent data from airflow staging area and then into targeted staging table
+    merschent_staging_table_loading = PythonOperator(
+        task_id='load_merchant_data',
         python_callable=load_csv_to_snowflake,
         op_kwargs={
-            'CSV_FILE_NAME': 'daily_transaction_data.csv',
-            'table_name': 'Daily_transactions'
+            'CSV_FILE_NAME': 'merchant_data.csv',
+            'table_name': 'merchant_Dim_s'
+        }
+    )
+
+    # Loading customer data from airflow staging area and then into targeted staging table
+    customer_staging_table_loding = PythonOperator(
+        task_id='load_customer_data',
+        python_callable=load_csv_to_snowflake,
+        op_kwargs={
+            'CSV_FILE_NAME': 'customer_data.csv',
+            'table_name': 'customer_Dim_s'
+        }
+    )
+
+    # Loading transaction data from airflow staging area and then into targeted staging table
+    fact_staging_table_loding = PythonOperator(
+        task_id='load_fact_data',
+        python_callable=load_csv_to_snowflake,
+        op_kwargs={
+            'CSV_FILE_NAME': 'transaction_data.csv',
+            'table_name': 'transactions_fact_s'
         }
     )
     # --------------------------------------------------------------------------------------- #
@@ -241,13 +290,31 @@ with DAG(
             'query': incremental_load_to_transaction
         }
     )
-
+    # --------------------------------------------------------------------------------------- #
     # truncate staging tables
-    truncate_staging_tables = PythonOperator(
-        task_id='truncate_staging_tables',
+    truncate_merchant_Dim_s = PythonOperator(
+        task_id='truncate_merchant_Dim_s',
         python_callable=execute_query,
         op_kwargs={
-            'query': "TRUNCATE TABLE Daily_transactions;"
+            'query': "TRUNCATE TABLE merchant_Dim_s;"
+        }
+    )
+    
+    # truncate staging tables
+    truncate_customer_Dim_s = PythonOperator(
+        task_id='truncate_customer_Dim_s',
+        python_callable=execute_query,
+        op_kwargs={
+            'query': "TRUNCATE TABLE customer_Dim_s;"
+        }
+    )
+    
+    # truncate staging tables
+    truncate_fact_s = PythonOperator(
+        task_id='truncate_fact_s',
+        python_callable=execute_query,
+        op_kwargs={
+            'query': "TRUNCATE TABLE transactions_fact_s;"
         }
     )
 
@@ -263,5 +330,34 @@ with DAG(
     #         'body': 'The ETL job has completed successfully.'
     #     }
     # )
+# [
+#     [merschant_data_extraction >> loding_merschent_csv_into_staging >> merschent_staging_table_loading >> incremental_load_to_merchant_Dim >> truncate_merchant_Dim_s] ,
+#     [customer_data_extraction >> loding_customer_csv_into_staging >> customer_staging_table_loding >> incremental_load_to_customer_Dim >> truncate_customer_Dim_s] 
+# ] >> [transaction_data_extraction >> loding_transaction_csv_into_staging >> fact_staging_table_loding >> incremental_load_to_transaction_fact >> truncate_fact_s]
 
-transaction_data_extraction >> loding_transaction_csv_into_staging >> daily_transaction_data_loading >> [incremental_load_to_merchant_Dim, incremental_load_to_customer_Dim, incremental_load_to_transaction_fact] >> truncate_staging_tables
+
+merchant_chain = (
+    merschant_data_extraction
+    >> loding_merschent_csv_into_staging
+    >> merschent_staging_table_loading
+    >> incremental_load_to_merchant_Dim
+    
+)
+
+customer_chain = (
+    customer_data_extraction
+    >> loding_customer_csv_into_staging
+    >> customer_staging_table_loding
+    >> incremental_load_to_customer_Dim
+    
+)
+
+transaction_chain = (
+    transaction_data_extraction
+    >> loding_transaction_csv_into_staging
+    >> fact_staging_table_loding
+    >> incremental_load_to_transaction_fact
+    
+)
+
+[merchant_chain, customer_chain] >> transaction_chain >> [truncate_fact_s  , truncate_customer_Dim_s  , truncate_merchant_Dim_s]
