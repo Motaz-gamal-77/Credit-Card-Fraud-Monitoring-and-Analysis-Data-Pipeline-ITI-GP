@@ -183,7 +183,7 @@ incremental_load_to_transaction =  """
         
 # Main DAG definition
 with DAG(
-    dag_id='full_load',
+    dag_id='ETL_DAG_From_DB_To_DWH',
     start_date=datetime(2025, 7, 29),
     schedule_interval='10 0 * * *',
     catchup=False
@@ -194,7 +194,7 @@ with DAG(
         task_id='exrtract_merchant_data',
         python_callable=extract_data_from_postgres_and_save_it_to_csv,
         op_kwargs={
-            'querey': "select distinct on (merchant_id) merchant_id,merchant, category, merch_long, merch_lat from transactions WHERE event_time::date = CURRENT_DATE - INTERVAL '1 day' ",
+            'querey': "select distinct on (merchant_id) merchant_id,merchant, category, merch_long, merch_lat from transactions  ",
             'file_name': 'merchant_data'})
     
     # # extracting customer data from postgres and saving it to csv
@@ -202,7 +202,7 @@ with DAG(
         task_id='exrtract_customer_data',
         python_callable=extract_data_from_postgres_and_save_it_to_csv,
         op_kwargs={
-            'querey': "select distinct on (customer_id) customer_id, cc_num, first, last, gender, dob, age, job, street, city, state, zip, lat, long, city_pop from transactions WHERE event_time::date = CURRENT_DATE - INTERVAL '1 day'",
+            'querey': "select distinct on (customer_id) customer_id, cc_num, first, last, gender, dob, age, job, street, city, state, zip, lat, long, city_pop from transactions ",
             'file_name': 'customer_data'})
         
         
@@ -211,7 +211,7 @@ with DAG(
         task_id='extract_transaction_data',
         python_callable=extract_data_from_postgres_and_save_it_to_csv,
         op_kwargs={
-            'querey': "select distinct on (trans_num) trans_num, trans_date_trans_time, customer_id, merchant_id, amt, distance_km, is_fraud, unix_time from transactions WHERE event_time::date = CURRENT_DATE - INTERVAL '1 day'",
+            'querey': "select distinct on (trans_num) trans_num, trans_date_trans_time, customer_id, merchant_id, amt, distance_km, is_fraud, unix_time from transactions ",
             'file_name': 'transaction_data'})
 
     # --------------------------------------------------------------------------------------- #
