@@ -554,7 +554,7 @@
           "editorMode": "code",
           "format": "table",
           "rawQuery": true,
-          "rawSql": "SELECT\r\n  state,\r\n  COUNT(*)\r\nFROM\r\n  transactions\r\nWHERE\r\n  (\r\n    is_fraud = 1\r\n    AND $__timeFilter(event_time)\r\n  )\r\nGROUP BY\r\n  state\r\n",
+          "rawSql": "SELECT\r\n  state,\r\n  COUNT(*)\r\nFROM\r\n  transactions\r\nWHERE\r\n  (\r\n    is_fraud = 1\r\n    AND $__timeFilter(event_time)\r\n  )\r\nGROUP BY\r\n  state\r\nOrder BY\r\n  COUNT(*) desc;\r\n",
           "refId": "A",
           "sql": {
             "columns": [
@@ -730,20 +730,21 @@
       },
       "fieldConfig": {
         "defaults": {
-          "color": {
-            "mode": "thresholds"
-          },
           "mappings": [],
           "thresholds": {
-            "mode": "absolute",
+            "mode": "percentage",
             "steps": [
               {
                 "color": "green",
                 "value": null
               },
               {
+                "color": "orange",
+                "value": 70
+              },
+              {
                 "color": "red",
-                "value": 80
+                "value": 85
               }
             ]
           }
@@ -848,7 +849,7 @@
           "values": false
         },
         "showThresholdLabels": false,
-        "showThresholdMarkers": false
+        "showThresholdMarkers": true
       },
       "pluginVersion": "10.0.3",
       "targets": [
@@ -1095,6 +1096,6 @@
   "timezone": "",
   "title": "Real Time Credit Card Fraud Cases Monitoring",
   "uid": "ee1bfb42-4456-4cda-8599-57dd758376a9",
-  "version": 4,
+  "version": 5,
   "weekStart": ""
 }
