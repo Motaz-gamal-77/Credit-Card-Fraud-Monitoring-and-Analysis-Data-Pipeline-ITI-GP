@@ -1,3 +1,20 @@
+# 💳 Real-Time Fraud Detection & Monitoring Pipeline
+
+
+## 📌 Overview
+This project delivers a **fully integrated real-time and batch data pipeline** to detect, predict, and monitor fraudulent credit card transactions with **high accuracy** and **minimal latency**.  
+
+The solution leverages **streaming analytics, predictive modeling, and interactive dashboards** to empower financial institutions with immediate fraud alerts and deep historical insights.
+
+## 🚀 Features
+- **Real-time fraud prediction** using Apache Kafka & Spark Structured Streaming.
+- **Machine Learning model integration** for predicting fraudulent transactions as they occur.
+- **Live monitoring dashboards** in Grafana with instant fraud alerts.
+- **Historical analytics and reporting** through Power BI connected to Snowflake.
+- **Batch ETL orchestration** via Apache Airflow for long-term trend analysis.
+- **Long-term data storage** in Hadoop HDFS for model retraining and deep analytics.
+- **Cloud deployment** on AWS EC2 with Docker containerization for portability and scalability.
+
 # System Architecture
 
 ![System Architecture](/Docs/full_arch.png)
@@ -69,7 +86,6 @@ These ensure **persistent storage**:
 
 
 
-
 ## 🔗 Bind Mounts
 
 These map **host directories** to container paths for code, configs, and data sharing:
@@ -106,11 +122,35 @@ These map **host directories** to container paths for code, configs, and data sh
 ├── docker-compose.yml ← Spark JARs (for Kafka, hadoop, etc.)
 ├── gitignore          ← Ignored files by git
 └── ReadMe.md          ← This documentation
-
 ```
-## Connect with me
 
-- [🔗 LinkedIn Account  →    WWW.linkedin.com/mohamed-eldeeb](https://www.linkedin.com/in/mohamed-eldeeb-9706261b6/)
+## 📂 Pipeline Workflow
+
+### **1. Real-Time Monitoring Pipeline**
+1. Transaction events ingested via **Apache Kafka**.
+2. **PySpark Structured Streaming** processes transactions (cleaning, transformation, feature engineering).
+3. Fraud prediction performed via **ML model** in real-time.
+4. Results stored in **PostgreSQL**, displayed instantly in **Grafana** dashboards with alerting.
+
+### **2. Batch Analytics Pipeline**
+1. **Apache Airflow** schedules ETL to load aggregated data into **Snowflake**.
+2. **Power BI** dashboards provide historical trends, compliance reports, and analytics.
+
+
+## 📊 Dashboards
+- **Grafana:** Real-time fraud alerts, transaction volumes, and KPIs.
+- **Power BI:** Historical fraud trends, compliance metrics, and risk analysis.
+
+
+## 📜 Acknowledgements
+We are grateful for the open-source and enterprise-grade tools that made this project possible — Apache Kafka, Apache Spark, Hadoop, PostgreSQL, Snowflake, Grafana, and Power BI — and for the guidance we received throughout the development process.
+
+## 🤝 Connect with us
+- [🔗 Mohamed Eldeeb – LinkedIn](https://www.linkedin.com/in/mohamed-eldeeb-9706261b6/)
+- [🔗 Mo'taz Gamal – LinkedIn](https://www.linkedin.com/in/mo-taz-gamal/)
+- [🔗 Atef Mousa – LinkedIn](https://www.linkedin.com/in/atef-mousa/)
+- [🔗 Ahmed Wahdan – LinkedIn](https://www.linkedin.com/in/ahmedwahdann/)
+- [🔗 Ali Younis – LinkedIn](https://www.linkedin.com/in/ali-younis-781328181/)
 
 
 
