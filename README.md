@@ -4,7 +4,7 @@
 ## 📌 Overview
 This project delivers a **fully integrated real-time and batch data pipeline** to detect and monitor fraudulent credit card transactions with **high accuracy** and **minimal latency**. The solution leverages **streaming analytics, predictive modeling, and interactive dashboards** to empower financial institutions with immediate fraud alerts and deep historical insights.
 
-## 🚀 Features
+##  Features
 - **Real-time fraud prediction** using Apache Kafka & Spark Structured Streaming.
 - **Machine Learning model integration** for predicting fraudulent transactions as they occur.
 - **Live monitoring dashboards** in Grafana with instant fraud alerts.
@@ -28,7 +28,7 @@ A fully integrated Docker-based environment for building modern data engineering
 
 
 
-## 🔧 Services Summary
+##  Services Summary
 #### 🌐 Internal Network Configuration
 All containers are connected to the custom Docker bridge network `sparknet` with a static IP setup in the `172.30.0.0/16` subnet
 
@@ -84,7 +84,7 @@ These ensure **persistent storage**:
 
 
 
-## 🔗 Bind Mounts
+##  Bind Mounts
 
 These map **host directories** to container paths for code, configs, and data sharing:
 
@@ -122,7 +122,7 @@ These map **host directories** to container paths for code, configs, and data sh
 └── ReadMe.md          ← This documentation
 ```
 
-## 📂 Pipeline Workflow
+##  Pipeline Workflow
 
 ### **1. Real-Time Monitoring Pipeline**
 1. Transaction events ingested via **Apache Kafka**.
@@ -149,6 +149,7 @@ We are grateful for the open-source and enterprise-grade tools that made this pr
 - [🔗 Atef Mousa – LinkedIn](https://www.linkedin.com/in/atef-mousa/)
 - [🔗 Ahmed Wahdan – LinkedIn](https://www.linkedin.com/in/ahmedwahdann/)
 - [🔗 Ali Younis – LinkedIn](https://www.linkedin.com/in/ali-younis-781328181/)
+
 
 
 
