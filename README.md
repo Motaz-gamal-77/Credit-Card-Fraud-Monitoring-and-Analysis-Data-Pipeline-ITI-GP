@@ -29,7 +29,7 @@ A fully integrated Docker-based environment for building modern data engineering
 
 
 ##  Services Summary
-#### 🌐 Internal Network Configuration
+#### Internal Network Configuration
 All containers are connected to the custom Docker bridge network `sparknet` with a static IP setup in the `172.30.0.0/16` subnet
 
 | Service                  | Description                                         | Container Name        | Internal IP     | Host IP     | Port Mapping                   | Username     | Password     |
@@ -52,7 +52,7 @@ All containers are connected to the custom Docker bridge network `sparknet` with
 
 
 
-## 🔗 Web Interfaces
+##  Web Interfaces
 
 | Component                 | URL                                   | Notes                                |
 |---------------------------|----------------------------------------|--------------------------------------|
@@ -149,6 +149,7 @@ We are grateful for the open-source and enterprise-grade tools that made this pr
 - [🔗 Atef Mousa – LinkedIn](https://www.linkedin.com/in/atef-mousa/)
 - [🔗 Ahmed Wahdan – LinkedIn](https://www.linkedin.com/in/ahmedwahdann/)
 - [🔗 Ali Younis – LinkedIn](https://www.linkedin.com/in/ali-younis-781328181/)
+
 
 
 
