@@ -29,6 +29,8 @@ CREATE Table Transactions (
     customer_id VARCHAR
 )
 
+ALTER TABLE Transactions ADD COLUMN prediction INT DEFAULT 0;
+
 DROP TABLE Transactions;
 
 TRUNCATE TABLE Transactions;
