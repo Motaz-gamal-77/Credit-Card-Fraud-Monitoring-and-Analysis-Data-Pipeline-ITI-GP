@@ -17,7 +17,7 @@ The solution leverages **streaming analytics, predictive modeling, and interacti
 
 # System Architecture
 
-![System Architecture](/Docs/full_arch.png)
+![System Architecture](/Docs/full%20arch.png)
 # 🐳 Dockerized Data Engineering Stack
 
 A fully integrated Docker-based environment for building modern data engineering pipelines with:
@@ -151,6 +151,7 @@ We are grateful for the open-source and enterprise-grade tools that made this pr
 - [🔗 Atef Mousa – LinkedIn](https://www.linkedin.com/in/atef-mousa/)
 - [🔗 Ahmed Wahdan – LinkedIn](https://www.linkedin.com/in/ahmedwahdann/)
 - [🔗 Ali Younis – LinkedIn](https://www.linkedin.com/in/ali-younis-781328181/)
+
 
 
 
