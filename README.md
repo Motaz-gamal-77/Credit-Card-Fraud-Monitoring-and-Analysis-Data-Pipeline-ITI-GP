@@ -2,7 +2,7 @@
 
 
 ## 📌 Overview
-This project delivers a **fully integrated real-time and batch data pipeline** to detect, predict, and monitor fraudulent credit card transactions with **high accuracy** and **minimal latency**. The solution leverages **streaming analytics, predictive modeling, and interactive dashboards** to empower financial institutions with immediate fraud alerts and deep historical insights.
+This project delivers a **fully integrated real-time and batch data pipeline** to detect and monitor fraudulent credit card transactions with **high accuracy** and **minimal latency**. The solution leverages **streaming analytics, predictive modeling, and interactive dashboards** to empower financial institutions with immediate fraud alerts and deep historical insights.
 
 ## 🚀 Features
 - **Real-time fraud prediction** using Apache Kafka & Spark Structured Streaming.
@@ -149,6 +149,7 @@ We are grateful for the open-source and enterprise-grade tools that made this pr
 - [🔗 Atef Mousa – LinkedIn](https://www.linkedin.com/in/atef-mousa/)
 - [🔗 Ahmed Wahdan – LinkedIn](https://www.linkedin.com/in/ahmedwahdann/)
 - [🔗 Ali Younis – LinkedIn](https://www.linkedin.com/in/ali-younis-781328181/)
+
 
 
 
