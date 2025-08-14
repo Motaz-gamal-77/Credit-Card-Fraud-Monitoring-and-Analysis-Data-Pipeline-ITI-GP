@@ -2,5 +2,7 @@
 data/
 logs/
 jars/
+notebooks/ml_model/saved_model/
+notebooks/Spark-Streaming/fraud_detection_sparkml_model/
 ITI_DE_Pipeline_Project.pem
 install docker on EC2.sh
