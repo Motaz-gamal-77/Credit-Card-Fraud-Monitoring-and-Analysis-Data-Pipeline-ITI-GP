@@ -149,6 +149,9 @@ We are grateful for the open-source and enterprise-grade tools that made this pr
 - [🔗 Atef Mousa – LinkedIn](https://www.linkedin.com/in/atef-mousa/)
 - [🔗 Ahmed Wahdan – LinkedIn](https://www.linkedin.com/in/ahmedwahdann/)
 - [🔗 Ali Younis – LinkedIn](https://www.linkedin.com/in/ali-younis-781328181/)
+- [🔗 Kamel Mostafa – LinkedIn](https://www.linkedin.com/in/kamel-mustafa-4a788821b/)
+
+
 
 
 
